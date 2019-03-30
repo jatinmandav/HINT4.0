@@ -76,7 +76,7 @@ reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1, patience=int(5), verbose=1
 earlystopper = EarlyStopping('val_loss', patience=8)
 
 model.fit(train_faces, train_emotions, batch_size=150, epochs=200, verbose=1,
-          callbacks=[checkpoint, logging], validation_data=(val_faces, val_emotions))
+          callbacks=[checkpoint, logging, reduce_lr, earlystopper], validation_data=(val_faces, val_emotions))
 
 '''
 for layer in base_model.layers:

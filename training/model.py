@@ -14,48 +14,55 @@ class CNNModel:
 
     def build_model(self):
         # Input
-        inp = Input(shape=self.input_shape)
+        inp = Input(shape=self.input_shape, name='input_1')
 
-        x1 = Conv2D(32, kernel_size=3, padding='same', activation='relu')(inp)
-        x2 = Conv2D(32, kernel_size=5, padding='same', activation='relu')(x1)
+        #x = Conv2D(8, kernel_size=3, padding='same', activation='relu')(x)
+        #x = Conv2D(8, kernel_size=3, padding='same', activation='relu', name='conv2d_1')(inp)
+        #x = BatchNormalization(name='batch_normalization_1')(x)
+        #x = MaxPool2D(pool_size=3, strides=2, name='max_pooling2d_1')(x)
 
-        x = Multiply()([x1, x2])
+        #x = Conv2D(16, kernel_size=3, padding='same', activation='relu')(x)
+        #x = Conv2D(16, kernel_size=3, padding='same', activation='relu', name='conv2d_2')(x)
+        x = Conv2D(16, kernel_size=3, padding='same', activation='relu', name='conv2d_3')(inp)
+        x = BatchNormalization(name='batch_normalization_2')(x)
+        x = MaxPool2D(pool_size=3, strides=2, name='max_pooling2d_2')(x)
 
-        x3 = Conv2D(32, kernel_size=5, padding='same', activation='relu')(x)
-        x4 = Conv2D(32, kernel_size=5, padding='same', activation='relu')(x3)
+        #x = Conv2D(32, kernel_size=3, padding='same', activation='relu')(x)
+        x = Conv2D(32, kernel_size=3, padding='same', activation='relu', name='conv2d_4')(x)
+        x = Conv2D(32, kernel_size=3, padding='same', activation='relu', name='conv2d_5')(x)
+        x = BatchNormalization(name='batch_normalization_3')(x)
+        x = MaxPool2D(pool_size=3, strides=2, name='max_pooling2d_3')(x)
 
-        x = Multiply()([x, x4])
+        #x = Conv2D(64, kernel_size=3, padding='same', activation='relu')(x)
+        x = Conv2D(64, kernel_size=3, padding='same', activation='relu', name='conv2d_6')(x)
+        x = Conv2D(64, kernel_size=3, padding='same', activation='relu', name='conv2d_7')(x)
+        x = BatchNormalization(name='batch_normalization_4')(x)
+        x = MaxPool2D(pool_size=3, strides=2, name='max_pooling2d_4')(x)
 
-        x5 = Conv2D(32, kernel_size=7, padding='same', activation='relu')(x)
-        x6 = Conv2D(32, kernel_size=7, padding='same', activation='relu')(x5)
-        x7 = Conv2D(32, kernel_size=7, padding='same', activation='relu')(x6)
+        #x = Conv2D(128, kernel_size=3, padding='same', activation='relu')(x)
+        x = Conv2D(128, kernel_size=3, padding='same', activation='relu', name='conv2d_8')(x)
+        x = Conv2D(128, kernel_size=3, padding='same', activation='relu', name='conv2d_9')(x)
+        x = BatchNormalization(name='batch_normalization_5')(x)
+        x = MaxPool2D(pool_size=3, strides=2, name='max_pooling2d_5')(x)
 
-        x = Multiply()([x, x7])
+        #x = Conv2D(192, kernel_size=3, padding='same', activation='relu')(x)
+        #x = Conv2D(192, kernel_size=3, padding='same', activation='relu')(x)
+        x = Conv2D(192, kernel_size=3, padding='same', activation='relu', name='conv2d_10')(x)
+        x = Conv2D(192, kernel_size=3, padding='same', activation='relu', name='conv2d_11')(x)
+        x = BatchNormalization(name='batch_normalization_6')(x)
+        x = Flatten(name='flatten_1')(x)
 
-        x8 = Conv2D(32, kernel_size=11, padding='same', activation='relu')(x)
+        x = Dense(512, activation='relu', name='dense_1')(x)
+        x = Dense(512, activation='relu', name='dense_2')(x)
 
-        x = Multiply()([x1, x8])
+        out = Dense(self.classes, activation='softmax', name='output_1')(x)
 
-        x = GlobalAveragePooling2D()(x)
+        model = Model(inputs=inp, outputs=out)
+        #model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-        #x = MaxPool2D(pool_size=3, strides=2)(x)
-
-        #x = Conv2D(128, kernel_size=11, padding='same', activation='relu')(x)
-
-        #x = Flatten()(x)
-
-        #x = Dense(512, activation='relu')(x)
-        #x = Dropout(0.1)(x)
-        x = Dense(512, activation='relu')(x)
-        x = Dropout(0.2)(x)
-        x = Dense(512, activation='relu')(x)
-
-        out = Dense(self.classes, activation='softmax')(x)
-        self.model = Model(inputs=inp, outputs=out)
-
-        return self.model
+        return model
 
 if __name__ == '__main__':
-    model = CNNModel((64, 64, 3), 7)
+    model = CNNModel((48, 48, 3), 7)
     model = model.build_model()
     model.summary()
