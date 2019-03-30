@@ -7,6 +7,7 @@ from keras.models import Model
 
 import tensorflow as tf
 from keras.applications.vgg16 import VGG16
+from keras.applications.vgg19 import VGG19
 from keras.applications.resnet50 import ResNet50
 from keras.applications.densenet import DenseNet121
 
@@ -49,12 +50,13 @@ print('Training Size: {}, {}'.format(train_faces.shape, train_emotions.shape))
 print('Testing Size: {}, {}'.format(test_faces.shape, test_emotions.shape))
 print('Validation Size: {}, {}'.format(val_faces.shape, val_emotions.shape))
 
-model = CNNModel(input_shape=(image_size[0], image_size[1], 3), classes=len(EMOTIONS))
-model = model.build_model()
+#model = CNNModel(input_shape=(image_size[0], image_size[1], 3), classes=len(EMOTIONS))
+#model = model.build_model()
 
 #inp = Input(shape=(48, 48, 1))
 #base_model = VGG16(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
-'''base_model = DenseNet121(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
+#base_model = DenseNet121(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
+base_model = VGG19(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
 x = Dense(512, activation='softmax')(x)
@@ -63,7 +65,7 @@ model = Model(inputs=base_model.input, outputs=x)
 
 for layer in base_model.layers:
     layer.trainable = False
-'''
+
 optimizer = Adam(lr=0.001)
 model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
@@ -76,7 +78,6 @@ reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1, patience=int(5), verbose=1
 
 earlystopper = EarlyStopping('val_loss', patience=8)
 
-'''
 model.fit(train_faces, train_emotions, batch_size=150, epochs=25, verbose=1,
           callbacks=[checkpoint, logging], validation_data=(val_faces, val_emotions))
 
@@ -85,7 +86,7 @@ for layer in base_model.layers:
     layer.trainable = True
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-'''
+
 model.fit(train_faces, train_emotions, batch_size=100, epochs=100, verbose=1,
           callbacks=[checkpoint, logging, reduce_lr, earlystopper], validation_data=(val_faces, val_emotions))
 
