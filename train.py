@@ -8,6 +8,7 @@ from keras.models import Model
 import tensorflow as tf
 from keras.applications.vgg16 import VGG16
 from keras.applications.resnet50 import ResNet50
+from keras.applications.densenet import DenseNet121
 
 class TrainValTensorBoard(TensorBoard):
     def __init__(self, log_dir='./logs', **kwargs):
@@ -52,7 +53,8 @@ print('Validation Size: {}, {}'.format(val_faces.shape, val_emotions.shape))
 #model = model.build_model()
 
 #inp = Input(shape=(48, 48, 1))
-base_model = ResNet50(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
+#base_model = VGG16(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
+base_model = DenseNet121(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
 x = Dense(512, activation='softmax')(x)
@@ -73,11 +75,13 @@ reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1, patience=int(5), verbose=1
 
 earlystopper = EarlyStopping('val_loss', patience=8)
 
-model.fit(train_faces, train_emotions, batch_size=100, epochs=25, verbose=1,
+model.fit(train_faces, train_emotions, batch_size=150, epochs=25, verbose=1,
           callbacks=[checkpoint, logging], validation_data=(val_faces, val_emotions))
 
 for layer in base_model.layers:
     layer.trainable = True
+
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 model.fit(train_faces, train_emotions, batch_size=100, epochs=50, verbose=1, initial_epoch=25,
           callbacks=[checkpoint, logging, reduce_lr, earlystopper], validation_data=(val_faces, val_emotions))
