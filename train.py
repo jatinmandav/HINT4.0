@@ -7,6 +7,7 @@ from keras.models import Model
 
 import tensorflow as tf
 from keras.applications.vgg16 import VGG16
+from keras.applications.resnet import ResNet50
 
 class TrainValTensorBoard(TensorBoard):
     def __init__(self, log_dir='./logs', **kwargs):
@@ -72,7 +73,13 @@ reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1, patience=int(5), verbose=1
 
 earlystopper = EarlyStopping('val_loss', patience=8)
 
-model.fit(train_faces, train_emotions, batch_size=150, epochs=200, verbose=1,
+model.fit(train_faces, train_emotions, batch_size=100, epochs=25, verbose=1,
+          callbacks=[checkpoint, logging], validation_data=(val_faces, val_emotions))
+
+for layer in base_model.layers:
+    layer.trainable = True
+
+model.fit(train_faces, train_emotions, batch_size=100, epochs=50, verbose=1, initial_epoch=25
           callbacks=[checkpoint, logging, reduce_lr, earlystopper], validation_data=(val_faces, val_emotions))
 
 print('Accuracy on Training Data: {}'.format(model.evaluate(train_faces, train_emotions, batch_size=100)))
@@ -81,5 +88,5 @@ print('Accuracy on Testing Data: {}'.format(model.evaluate(test_faces, test_emot
 
 import time
 start = time.time()
-model.predict(np.reshape(test_x[0], (1, image_size[0], image_size[1], 1)))
+model.predict(np.reshape(test_faces[0], (1, image_size[0], image_size[1], 3)))
 print('Inference Time: {}'.format(time.time() - start))
