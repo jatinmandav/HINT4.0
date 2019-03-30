@@ -7,7 +7,7 @@ from keras.models import Model
 
 import tensorflow as tf
 from keras.applications.vgg16 import VGG16
-from keras.applications.resnet import ResNet50
+from keras.applications.resnet50 import ResNet50
 
 class TrainValTensorBoard(TensorBoard):
     def __init__(self, log_dir='./logs', **kwargs):
