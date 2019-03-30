@@ -78,7 +78,7 @@ reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1, patience=int(5), verbose=1
 
 earlystopper = EarlyStopping('val_loss', patience=8)
 
-model.fit(train_faces, train_emotions, batch_size=150, epochs=25, verbose=1,
+model.fit(train_faces, train_emotions, batch_size=200, epochs=25, verbose=1,
           callbacks=[checkpoint, logging], validation_data=(val_faces, val_emotions))
 
 
@@ -87,7 +87,7 @@ for layer in base_model.layers:
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-model.fit(train_faces, train_emotions, batch_size=100, epochs=100, verbose=1,
+model.fit(train_faces, train_emotions, batch_size=100, epochs=100, verbose=1, initial_epoch=25,
           callbacks=[checkpoint, logging, reduce_lr, earlystopper], validation_data=(val_faces, val_emotions))
 
 
