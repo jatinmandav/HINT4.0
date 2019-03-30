@@ -43,7 +43,7 @@ print('Training Size: {}, {}'.format(train_faces.shape, train_emotions.shape))
 print('Testing Size: {}, {}'.format(test_faces.shape, test_emotions.shape))
 print('Validation Size: {}, {}'.format(val_faces.shape, val_emotions.shape))
 
-model = Model(input_shape=(image_size), classes=len(EMOTIONS))
+model = Model(input_shape=(image_size[0], image_size[1], 1), classes=len(EMOTIONS))
 model = model.build_model()
 
 optimizer = Adam(lr=0.0001)
@@ -67,5 +67,5 @@ print('Accuracy on Testing Data: {}'.format(model.evaluate(test_faces, test_emot
 
 import time
 start = time.time()
-model.predict(np.reshape(test_x[0], (1, image_size[0], image_size[1], 3)))
+model.predict(np.reshape(test_x[0], (1, image_size[0], image_size[1], 1)))
 print('Inference Time: {}'.format(time.time() - start))

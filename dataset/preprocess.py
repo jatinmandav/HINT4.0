@@ -5,7 +5,7 @@ import cv2
 from tqdm import tqdm
 from collections import Counter
 
-image_size = (64, 64)
+image_size = (48, 48)
 
 def image_preprocess(image):
     image = image.astype('float32')
