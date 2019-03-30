@@ -2,7 +2,7 @@
 from dataset.preprocess import *
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, TensorBoard
-from keras.layers import Dense, GlobalAveragePooling2D
+from keras.layers import Dense, GlobalAveragePooling2D, Input
 from keras.models import Model
 
 import tensorflow as tf
@@ -51,11 +51,12 @@ print('Validation Size: {}, {}'.format(val_faces.shape, val_emotions.shape))
 #model = model.build_model()
 
 base_model = VGG16(weights='imagenet', include_top=False)
+inp = Input(shape=(48, 48, 1))
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
 x = Dense(512, activation='softmax')(x)
 x = Dense(len(EMOTIONS), activation='softmax')(x)
-model = Model(inputs=base_model.input, outputs=x)
+model = Model(inputs=inp, outputs=x)
 
 for layer in base_model.layers:
     layer.trainable = False

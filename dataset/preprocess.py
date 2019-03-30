@@ -15,7 +15,6 @@ def image_preprocess(image):
 
 def read_data(path, type='Training'):
     df = pd.read_csv(path)
-    print(df.describe())
     #print(df.head())
 
     assert type == 'Training' or type == 'PrivateTest' or type == 'PublicTest', 'Please Provide Training/PrivateTest/PublicTest to read the data'
