@@ -50,9 +50,9 @@ class CNNModel:
 
         x = Flatten()(x)
 
-        x = Dense(512, activation='relu')(x)
+        x = Dense(1024, activation='relu')(x)
         x = Dropout(0.3)(x)
-        x = Dense(512, activation='relu')(x)
+        x = Dense(1024, activation='relu')(x)
         x = Dropout(0.3)(x)
 
         out = Dense(self.classes, activation='softmax')(x)
