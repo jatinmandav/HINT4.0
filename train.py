@@ -52,7 +52,7 @@ print('Validation Size: {}, {}'.format(val_faces.shape, val_emotions.shape))
 #model = model.build_model()
 
 #inp = Input(shape=(48, 48, 1))
-base_model = VGG16(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
+base_model = ResNet50(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
 x = Dense(512, activation='softmax')(x)
