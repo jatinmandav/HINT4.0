@@ -79,7 +79,7 @@ model.fit(train_faces, train_emotions, batch_size=100, epochs=25, verbose=1,
 for layer in base_model.layers:
     layer.trainable = True
 
-model.fit(train_faces, train_emotions, batch_size=100, epochs=50, verbose=1, initial_epoch=25
+model.fit(train_faces, train_emotions, batch_size=100, epochs=50, verbose=1, initial_epoch=25,
           callbacks=[checkpoint, logging, reduce_lr, earlystopper], validation_data=(val_faces, val_emotions))
 
 print('Accuracy on Training Data: {}'.format(model.evaluate(train_faces, train_emotions, batch_size=100)))
