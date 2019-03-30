@@ -64,7 +64,7 @@ model = Model(inputs=base_model.input, outputs=x)
 for layer in base_model.layers:
     layer.trainable = False
 #optimizer = Adam(lr=0.0001)'''
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', optimizer='sgd', metrics=['accuracy'])
 
 log_dir = 'logs'
 
