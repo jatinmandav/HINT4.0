@@ -1,4 +1,4 @@
-#from training.model import CNNModel
+from training.model import CNNModel
 from dataset.preprocess import *
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, TensorBoard
@@ -49,10 +49,10 @@ print('Training Size: {}, {}'.format(train_faces.shape, train_emotions.shape))
 print('Testing Size: {}, {}'.format(test_faces.shape, test_emotions.shape))
 print('Validation Size: {}, {}'.format(val_faces.shape, val_emotions.shape))
 
-#model = CNNModel(input_shape=(image_size[0], image_size[1], 1), classes=len(EMOTIONS))
-#model = model.build_model()
+model = CNNModel(input_shape=(image_size[0], image_size[1], 3), classes=len(EMOTIONS))
+model = model.build_model()
 
-#inp = Input(shape=(48, 48, 1))
+'''#inp = Input(shape=(48, 48, 1))
 #base_model = VGG16(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
 base_model = DenseNet121(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
 x = base_model.output
@@ -63,7 +63,7 @@ model = Model(inputs=base_model.input, outputs=x)
 
 for layer in base_model.layers:
     layer.trainable = False
-#optimizer = Adam(lr=0.0001)
+#optimizer = Adam(lr=0.0001)'''
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 log_dir = 'logs'
@@ -75,9 +75,10 @@ reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1, patience=int(5), verbose=1
 
 earlystopper = EarlyStopping('val_loss', patience=8)
 
-model.fit(train_faces, train_emotions, batch_size=150, epochs=25, verbose=1,
+model.fit(train_faces, train_emotions, batch_size=150, epochs=200, verbose=1,
           callbacks=[checkpoint, logging], validation_data=(val_faces, val_emotions))
 
+'''
 for layer in base_model.layers:
     layer.trainable = True
 
@@ -85,6 +86,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 
 model.fit(train_faces, train_emotions, batch_size=100, epochs=50, verbose=1, initial_epoch=25,
           callbacks=[checkpoint, logging, reduce_lr, earlystopper], validation_data=(val_faces, val_emotions))
+'''
 
 print('Accuracy on Training Data: {}'.format(model.evaluate(train_faces, train_emotions, batch_size=100)))
 print('Accuracy on Validation Data: {}'.format(model.evaluate(val_faces, val_emotions, batch_size=100)))
