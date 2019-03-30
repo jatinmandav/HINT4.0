@@ -1,8 +1,12 @@
-from training.model import Model
+#from training.model import CNNModel
 from dataset.preprocess import *
 from keras.optimizers import Adam
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, TensorBoard
+from keras.layers import Dense, GlobalAveragePooling2D
+from keras.models import Model
+
 import tensorflow as tf
+from keras.applications.vgg16 import VGG16
 
 class TrainValTensorBoard(TensorBoard):
     def __init__(self, log_dir='./logs', **kwargs):
@@ -43,10 +47,19 @@ print('Training Size: {}, {}'.format(train_faces.shape, train_emotions.shape))
 print('Testing Size: {}, {}'.format(test_faces.shape, test_emotions.shape))
 print('Validation Size: {}, {}'.format(val_faces.shape, val_emotions.shape))
 
-model = Model(input_shape=(image_size[0], image_size[1], 1), classes=len(EMOTIONS))
-model = model.build_model()
+#model = CNNModel(input_shape=(image_size[0], image_size[1], 1), classes=len(EMOTIONS))
+#model = model.build_model()
 
-optimizer = Adam(lr=0.0001)
+base_model = VGG16(weights='imagenet', include_top=False)
+x = base_model.output
+x = GlobalAveragePooling2D()(x)
+x = Dense(512, activation='softmax')(x)
+x = Dense(len(EMOTIONS), activation='softmax')(x)
+model = Model(inputs=base_model.input, outputs=x)
+
+for layer in base_model.layers:
+    layer.trainable = False
+#optimizer = Adam(lr=0.0001)
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 log_dir = 'logs'

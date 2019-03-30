@@ -1,10 +1,12 @@
 from keras.models import Model
 from keras.layers import Input, Dense, Dropout, MaxPool2D, Conv2D, Flatten
 from keras.layers.normalization import BatchNormalization
-
 import keras.backend as K
 
-class Model:
+from keras.applications.vgg16 import VGG16
+
+
+class CNNModel:
     def __init__(self, input_shape=None, classes=None):
         assert input_shape != None or classes != None, 'No Input shape/Classes provided'
         self.model = None
