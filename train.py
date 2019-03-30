@@ -50,13 +50,13 @@ print('Validation Size: {}, {}'.format(val_faces.shape, val_emotions.shape))
 #model = CNNModel(input_shape=(image_size[0], image_size[1], 1), classes=len(EMOTIONS))
 #model = model.build_model()
 
-inp = Input(shape=(48, 48, 1))
-base_model = VGG16(input_tensor=inp, weights='imagenet', include_top=False)
+#inp = Input(shape=(48, 48, 1))
+base_model = VGG16(input_shape=(48, 48, 3), weights='imagenet', include_top=False)
 x = base_model.output
 x = GlobalAveragePooling2D()(x)
 x = Dense(512, activation='softmax')(x)
 x = Dense(len(EMOTIONS), activation='softmax')(x)
-model = Model(inputs=inp, outputs=x)
+model = Model(inputs=base_model.input, outputs=x)
 
 for layer in base_model.layers:
     layer.trainable = False

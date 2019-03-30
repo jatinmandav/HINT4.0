@@ -30,10 +30,15 @@ def read_data(path, type='Training'):
         face = [int(pix) for pix in pixel.split(' ')]
         face = np.asarray(face).reshape(width, height)
         face = cv2.resize(face.astype('uint8'), image_size)
+        img = np.zeros((image_size[0], image_size[1], 3))
+        img[:,:,0] = face
+        img[:,:,1] = face
+        img[:,:,2] = face
+        face = img[:]
         faces.append(face.astype('float32'))
 
     faces = np.asarray(faces)
-    faces = np.expand_dims(faces, -1)
+    #faces = np.expand_dims(faces, -1)
     emotions = pd.get_dummies(df['emotion']).as_matrix()
 
     return faces, emotions
