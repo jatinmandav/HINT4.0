@@ -5,6 +5,8 @@ This project was developed during HackInTheNorth4.0
 The whole idea of this project is to provide an API for real-time analysis of human sentiments while they’re watching content like videos online.
 We aim to solve this problem as a deep-learning problem, deep learned models from large data, robust face alignment, and expected value formulation for age regression.
 
+Find Demo on YouTube: [Reaction.AI](https://www.youtube.com/watch?v=NdQvbnN7EXc&feature=youtu.be)
+
 ## Pipeline
  - User watches video.
  - Camera records face.
@@ -67,3 +69,5 @@ Following are some of the applications of Reaction.AI
  - Building an attractive DashBoard for easy and simple understanding
  - Improving Accuracy of age prediction
  - Generating an API compatible with various platforms
+
+Feel free to Star, Fork and contribute to the Repo!
