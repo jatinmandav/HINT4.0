@@ -5,6 +5,17 @@ This project was developed during HackInTheNorth4.0
 The whole idea of this project is to provide an API for real-time analysis of human sentiments while they’re watching content like videos online.
 We aim to solve this problem as a deep-learning problem, deep learned models from large data, robust face alignment, and expected value formulation for age regression.
 
+## Pipeline
+ - User watches video.
+ - Camera records face.
+ - Real-time Face Detection using WideResnet and simultaneous detection.
+ - Real-time Emotion Recognition using modified VGG-16 architecture.
+ - Data Analysis for each gender and age group, emotion wise.
+
+<p align="center"> <img src="demo_ss.png"/> </p>
+
+<p align="center"> <img src="live_graphs.png"/> </p>
+
 ## Dataset
 
 #### Emotion Recognition
