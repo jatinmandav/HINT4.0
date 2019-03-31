@@ -65,4 +65,6 @@ class CNNModel:
 if __name__ == '__main__':
     model = CNNModel((48, 48, 3), 7)
     model = model.build_model()
-    model.summary()
+    from keras.utils import plot_model
+    plot_model(model, show_shapes=True, to_file='vgg16_model.png')
+    #model.summary()
