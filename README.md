@@ -61,3 +61,9 @@ Following are some of the applications of Reaction.AI
  - Avoid Fake reviews
  - Block offending videos
  - Get how the content is reviewed within seconds of release
+
+## Future Work
+ - Improving Accuracy of Emotion detection model
+ - Building an attractive DashBoard for easy and simple understanding
+ - Improving Accuracy of age prediction
+ - Generating an API compatible with various platforms
